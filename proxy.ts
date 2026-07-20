@@ -1,0 +1,22 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function proxy(request: NextRequest) {
+  const response = NextResponse.next();
+
+  response.headers.set("Access-Control-Allow-Origin", "http://localhost:5173");
+  response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+  );
+
+  if (request.method === "OPTIONS") {
+    return new NextResponse(null, { status: 200, headers: response.headers });
+  }
+
+  return response;
+}
+
+export const config = {
+  matcher: "/api/:path*",
+};
